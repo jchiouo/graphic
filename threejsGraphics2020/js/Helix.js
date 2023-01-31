@@ -8,10 +8,10 @@ let clock = new THREE.Clock();
 
 
 function createScene() {
-  var mat = new THREE.MeshBasicMaterial({color: 0x081392});
+  var mat = new THREE.MeshBasicMaterial({color: 'blue'});
   var geom = new THREE.SphereGeometry(1, 12, 12);
   var mesh = new THREE.Mesh(geom, mat);
-  let helix = createHelix(mesh, 88, 2.8, 30, .5);
+  let helix = createHelix(mesh, 49, 2, 45, .5);
   scene.add(helix);
 
 }
@@ -44,7 +44,7 @@ function makeTriangle() {
     geom.vertices.push(a, b, c);
     let face = new THREE.Face3(0, 1, 2);
     geom.faces.push(face);
-    let mat = new THREE.MeshBasicMaterial({color: 0xFF00FF, side: THREE.DoubleSide});
+    let mat = new THREE.MeshLambertMaterial({color: 0xFF00FF, side: THREE.DoubleSide});
     let mesh = new THREE.Mesh(geom, mat);
     return mesh;
 }
