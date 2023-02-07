@@ -30,7 +30,8 @@ function createNestedTori(n,torusOut,torusIn,RadialSeg,TubeSeg) {
   for (var i = 0; i <  n; i++) {
   
     var torusGeometry = new THREE.TorusGeometry(torusOut, torusIn, RadialSeg, TubeSeg);
-    let arg1 = {emissive: getRandomColor(), transparent:  true, opacity: 0.8};
+  //  let arg1 = {emissive: getRandomColor(), transparent:  true, opacity: 0.8};
+   let arg1 = {emissive: getRandomColor() };
     var mat = new THREE.MeshLambertMaterial(arg1);
     var torus = new THREE.Mesh(torusGeometry, mat);
     torus.rps = 0.2;
@@ -52,11 +53,9 @@ function createNestedTori(n,torusOut,torusIn,RadialSeg,TubeSeg) {
 
 function animate() {
 	window.requestAnimationFrame(animate);
-	//render();
-      renderer.setAnimationLoop(function () {
-         update(Ntori);
-         renderer.render(scene, camera);
-    });
+    //  update(Ntori);
+      Ntori.position.z += 0.01;	
+      render();
 }
 
 function moveChildren(root, f) {
@@ -112,17 +111,13 @@ function mod(x, n) {
 function render() {
     let delta = clock.getDelta();
     cameraControls.update(delta);
-  /*  renderer.setAnimationLoop(function () {
-     //  update();
-       moveChildren(Ntori, makeColorAnimator(-1.0));
-       renderer.render(scene, camera);
-    }); */
-  //   moveChildren(Ntori, makeColorAnimator(-1.0));
+    renderer.setAnimationLoop(function () {
+         update(Ntori);
+         renderer.render(scene, camera);
+    }); 
     renderer.render(scene, camera); 
-  /*  renderer.setAnimationLoop(function () {
-       update(Ntori);
-       renderer.render(scene, camera);
-    }); */
+ 
+  
 }
 
 
@@ -133,14 +128,19 @@ function init() {
 
 	scene = new THREE.Scene();
 
-	renderer = new THREE.WebGLRenderer({antialias : true, preserveDrawingBuffer: true});
+	// renderer = new THREE.WebGLRenderer({antialias : true, preserveDrawingBuffer: true});
+      renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
 	renderer.gammaInput = true;
 	renderer.gammaOutput = true;
 	renderer.setSize(canvasWidth, canvasHeight);
 	renderer.setClearColor(0x000000, 1.0);
 
-	camera = new THREE.PerspectiveCamera( 40, canvasRatio, 1, 1000);
-	camera.position.set(0, 0, 30);
+	//camera = new THREE.PerspectiveCamera( 40, canvasRatio, 1, 1000);
+     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+     camera.position.z = 5;
+	// camera.position.set(0, 0, 30);
 	camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 	cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
